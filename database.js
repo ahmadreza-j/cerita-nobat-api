@@ -3,7 +3,7 @@ const mysql = require("mysql2");
 const { dbHost, dbUser, dbPass, dbName } = require("./env");
 const { Err } = require("./error");
 
-const { handleDate, prepareAllDateFormats } = require("./moment");
+const { handleDate } = require("./moment");
 
 const pool = mysql
   .createPool({
