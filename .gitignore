@@ -3,5 +3,6 @@ node_modules/
 
 .vscode
 
+# Ignore environment variables file
 .env.development
 .env.production
