@@ -14,15 +14,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Redirect HTTP to HTTPS
-app.use((req, res, next) => {
-  if (req.secure) {
-    next();
-  } else {
-    res.redirect(`https://${req.headers.host}${req.url}`);
-  }
-});
-
 // app.post("/login", async (req, res, next) => {
 //   try {
 //     const user = await login(req.body);
