@@ -1,4 +1,5 @@
 const mysql = require("mysql2");
+const crypto = require("crypto");
 
 const { dbHost, dbUser, dbPass, dbName } = require("./env");
 const { Err } = require("./error");
@@ -96,24 +97,25 @@ const deleteTurn = async (id) => {
   }
 };
 
-// const login = async ({ userNumber }) => {
-//   try {
-//     const [rows] = await pool.query(
-//       `
-//           SELECT *
-//           FROM operators
-//           WHERE id = ?
-//           `,
-//       [userNumber]
-//     );
-//     if (!rows[0]) {
-//       throw new Error("اجازه ورود داده نشد!");
-//     }
-//     return { ...rows[0], message: `${rows[0].name} عزیز خوش آمدید` };
-//   } catch (error) {
-//     return new Err(400, error.sqlMessage || error.message);
-//   }
-// };
+const login = async ({ userId }) => {
+  const hashed = crypto.createHash("md5").update(userId).digest("hex");
+  try {
+    const [rows] = await pool.query(
+      `
+          SELECT *
+          FROM operators
+          WHERE id = ?
+          `,
+      [hashed]
+    );
+    if (!rows[0]) {
+      throw new Error("اجازه ورود داده نشد!");
+    }
+    return { ...rows[0], message: `${rows[0].name} عزیز خوش آمدید` };
+  } catch (error) {
+    return new Err(400, error.sqlMessage || error.message);
+  }
+};
 
 // const getTurnById = async (id) => {
 //   try {
@@ -152,4 +154,5 @@ module.exports = {
   createTurns,
   editTurn,
   deleteTurn,
+  login
 };
