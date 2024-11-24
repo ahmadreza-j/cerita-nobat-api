@@ -10,6 +10,7 @@ const {
   deleteTurn,
 } = require("./database");
 const { Err } = require("./error");
+const { sendSubmitTurnInfoSms } = require("./sms");
 
 const app = express();
 app.use(cors());
@@ -54,6 +55,7 @@ app.get("/turns/:rdate?/:cdate?", async (req, res, next) => {
 app.post("/turn", async (req, res, next) => {
   try {
     const newTurn = await createTurns(req.body);
+    sendSubmitTurnInfoSms(req.body.date, req.body.refphone);
     res.status(201).send(newTurn);
   } catch (error) {
     next(error);

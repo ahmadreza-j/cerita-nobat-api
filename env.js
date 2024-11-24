@@ -9,6 +9,10 @@ const dbPass = process.env.MYSQL_PASSWORD;
 const dbName = process.env.MYSQL_DATABASE;
 const authVerify = process.env.AUTH_VERIFY;
 const env = process.env.NODE_ENV;
+const smsApiKey = process.env.SMS_API_KEY;
+const smsNumber = process.env.SMS_NUMBER;
+const smsPatternCodeTurn = process.env.SMS_PATTERN_CODE_TURN;
+const smsPatternCodeComment = process.env.SMS_PATTERN_CODE_COMMENT;
 
 module.exports = {
   port,
@@ -18,4 +22,8 @@ module.exports = {
   dbName,
   authVerify,
   env,
+  smsApiKey,
+  smsNumber,
+  smsPatternCodeTurn,
+  smsPatternCodeComment,
 };
