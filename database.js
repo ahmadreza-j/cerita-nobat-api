@@ -154,5 +154,5 @@ module.exports = {
   createTurns,
   editTurn,
   deleteTurn,
-  login
+  login,
 };
