@@ -117,21 +117,39 @@ const login = async ({ userId }) => {
   }
 };
 
-// const getTurnById = async (id) => {
-//   try {
-//     const [rows] = await pool.query(
-//       `
-//         SELECT *
-//         FROM appointments
-//         WHERE id = ?
-//         `,
-//       [id]
-//     );
-//     return rows[0];
-//   } catch (error) {
-//     return new Err(400, error.sqlMessage);
-//   }
-// };
+const setTurnStatus = async (id, status) => {
+  try {
+    console.log({id, status});
+    
+    const [result] = await pool.query(
+      `
+    UPDATE turns
+    SET status = ?
+    WHERE id = ?
+    `,
+      [status, id]
+    );
+    return await getTurnById(id);
+  } catch (error) {
+    throw new Err(error.code || 400, error.sqlMessage || error.message);
+  }
+};
+
+const getTurnById = async (id) => {
+  try {
+    const [rows] = await pool.query(
+      `
+        SELECT *
+        FROM turns
+        WHERE id = ?
+        `,
+      [id]
+    );
+    return rows[0];
+  } catch (error) {
+    return new Err(400, error.sqlMessage);
+  }
+};
 
 // const getTurnsByRange = async (startDate, endDate) => {
 //   try {
@@ -150,9 +168,11 @@ const login = async ({ userId }) => {
 // };
 
 module.exports = {
+  getTurnById,
   getTurnsByDate,
   createTurns,
   editTurn,
   deleteTurn,
   login,
+  setTurnStatus,
 };

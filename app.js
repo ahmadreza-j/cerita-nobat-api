@@ -4,13 +4,15 @@ const cors = require("cors");
 const { port, authVerify } = require("./env");
 const {
   login,
+  getTurnById,
   getTurnsByDate,
   createTurns,
   editTurn,
   deleteTurn,
+  setTurnStatus,
 } = require("./database");
 const { Err } = require("./error");
-const { sendSubmitTurnInfoSms } = require("./sms");
+const { sendSubmitTurnInfoSms, sendCommentSms } = require("./sms");
 
 const app = express();
 app.use(cors());
@@ -65,6 +67,7 @@ app.post("/turn", async (req, res, next) => {
 app.put("/turn", async (req, res, next) => {
   try {
     const turn = await editTurn(req.body);
+    sendSubmitTurnInfoSms(req.body.date, req.body.refphone);
     res.status(200).send(turn);
   } catch (error) {
     next(error);
@@ -76,6 +79,19 @@ app.delete("/turn/:id", async (req, res, next) => {
     const id = req.params.id;
     const turn = await deleteTurn(id);
     res.status(200).send(turn);
+  } catch (error) {
+    next(error);
+  }
+});
+
+app.put("/commentSms/:id", async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const turn = await getTurnById(id);
+    await sendCommentSms(turn.refphone);
+    const updatedTurn = await setTurnStatus(id, "commentSms");
+
+    res.status(200).send(updatedTurn);
   } catch (error) {
     next(error);
   }
