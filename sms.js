@@ -13,10 +13,15 @@ const sendSubmitTurnInfoSms = (fullDate, number) => {
   sendSms("turn", number, { date, hour });
 };
 
+const sendCommentSms = async (number) => {
+  const commentLink = "https://b2n.ir/y54587";
+  return sendSms("comment", number, { commentLink });
+};
+
 const sendSms = (type, toNum = "", input = {}) => {
   if (!smsApiKey || !smsNumber) return;
 
-  axios
+  return axios
     .post(
       "https://api2.ippanel.com/api/v1/sms/pattern/normal/send",
       {
@@ -34,7 +39,7 @@ const sendSms = (type, toNum = "", input = {}) => {
     )
     .then((response) => {
       if (response.status === 200) {
-        console.log(response.data);
+        return response.data
       } else {
         console.log("Unexpected response:", response.status);
       }
@@ -54,4 +59,5 @@ const getPatternCode = (type) => {
 
 module.exports = {
   sendSubmitTurnInfoSms,
+  sendCommentSms
 };
