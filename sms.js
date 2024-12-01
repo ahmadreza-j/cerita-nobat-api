@@ -14,7 +14,7 @@ const sendSubmitTurnInfoSms = (fullDate, number) => {
 };
 
 const sendCommentSms = async (number) => {
-  const commentLink = "https://b2n.ir/y54587";
+  const commentLink = "B2n.ir/q43447";
   return sendSms("comment", number, { commentLink });
 };
 
